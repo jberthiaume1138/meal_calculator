@@ -9,7 +9,7 @@ function Diner (firstname,lastname,title,meal) {
 }
 
 Diner.prototype.orderFood = function(dish)    {
-    this.meal.push(dish);
+    this.meal.push(dish)
 };
 
 Diner.prototype.myBill = function(tax,tip) {
@@ -33,8 +33,8 @@ function Dish (name,price) {
 function Feast (tax,tip,diners,menu) {
     this.tax = tax;
     this.tip = tip;
-    this.diners = diners;
-    this.menu = menu;
+    this.diners = [];
+    this.menu = [];
 }
 
 Feast.prototype.buildMenu = function() {
@@ -69,44 +69,6 @@ Feast.prototype.buildMenu = function() {
     return menu;    // array of dishes (objects)
 };
 
-Feast.prototype.getDiners = function() {
-    // code to accept user input for a diner would be here
-    // instead, hard code in some data
-    var diners = [];
-
-    var joff = new Diner();
-    joff.firstname = 'Joffrey';
-    joff.lastname = 'Baratheon';
-    joff.title = 'King of Westeros';
-    diners.push(joff);
-
-    var olenna = new Diner();
-    olenna.firstname = 'Olenna';
-    olenna.lastname = 'Tyrell';
-    olenna.title = 'Queen of Thorns';
-    diners.push(olenna);
-
-    var oberyn = new Diner();
-    oberyn.firstname = 'Oberyn';
-    oberyn.lastname = 'Martell';
-    oberyn.title = 'The Red Viper';
-    diners.push(oberyn);
-
-    var tyrion = new Diner();
-    tyrion.firstname = 'Tyrion';
-    tyrion.lastname = 'Lannister';
-    tyrion.title = 'Master of Coin';
-    diners.push(tyrion);
-
-    var sansa = new Diner();
-    sansa.firstname = 'Sansa';
-    sansa.lastname = 'Stark';
-    sansa.title = 'Lady of Winterfell';
-    diners.push(sansa);
-
-    return diners;
-};
-
 Feast.prototype.calculateCheck = function() {
 
 };
@@ -115,12 +77,42 @@ Feast.prototype.calculateCheck = function() {
  // -------------------------------------------------- main program -------------------------------------------------/
 var purpleWedding = new Feast();
 
-purpleWedding.diners = new purpleWedding.getDiners();     // array of diner objects
+//  purpleWedding.diners = new purpleWedding.getDiners();     // array of diner objects
 
 console.log('----------------------------------------------');
 console.log('******** Welcome to the Royal Wedding ********');
 console.log('----------------------------------------------');
 console.log('The guests are arriving, say hello to:');
+
+var joff = new Diner();
+joff.firstname = 'Joffrey';
+joff.lastname = 'Baratheon';
+joff.title = 'King of Westeros';
+purpleWedding.diners.push(joff);
+
+var olenna = new Diner();
+olenna.firstname = 'Olenna';
+olenna.lastname = 'Tyrell';
+olenna.title = 'Queen of Thorns';
+purpleWedding.diners.push(olenna);
+
+var oberyn = new Diner();
+oberyn.firstname = 'Oberyn';
+oberyn.lastname = 'Martell';
+oberyn.title = 'The Red Viper';
+purpleWedding.diners.push(oberyn);
+
+var tyrion = new Diner();
+tyrion.firstname = 'Tyrion';
+tyrion.lastname = 'Lannister';
+tyrion.title = 'Master of Coin';
+purpleWedding.diners.push(tyrion);
+
+var sansa = new Diner();
+sansa.firstname = 'Sansa';
+sansa.lastname = 'Stark';
+sansa.title = 'Lady of Winterfell';
+purpleWedding.diners.push(sansa);
 
 for(var i = 0; i<purpleWedding.diners.length; i++){
     console.log(purpleWedding.diners[i].firstname + ' ' +
@@ -128,36 +120,64 @@ for(var i = 0; i<purpleWedding.diners.length; i++){
                 purpleWedding.diners[i].title);
 }
 
-purpleWedding.menu = new purpleWedding.buildMenu()    // array of dishes
+// menu
 
-console.log('------------------------------');
+var wine = new Dish();
+wine.name = 'Imp\'s Special Ale';
+wine.price = 10;
+purpleWedding.menu.push(wine);
+
+var venison = new Dish();
+venison.name = 'Stormlands Venison';
+venison.price = 10;
+purpleWedding.menu.push(venison);
+
+var lemoncakes = new Dish();
+lemoncakes.name = 'Lemon Cakes';
+lemoncakes.price = 8;
+purpleWedding.menu.push(lemoncakes);
+
+var brown = new Dish();
+brown.name = 'Flea Bottom Bowl of Brown';
+brown.price = 1;
+purpleWedding.menu.push(brown);
+
+var pie = new Dish();
+pie.name = 'Wedding Pigeon Pie';
+pie.price = 20;
+purpleWedding.menu.push(pie);
+
+
+console.log('----------------------------------------------');
 console.log('Today\'s Menu is:');
 for(var i = 0; i<purpleWedding.menu.length; i++){
     console.log(purpleWedding.menu[i].name + ' ' + purpleWedding.menu[i].price);    // display the menu
 }
 
+joff.orderFood(wine);
+joff.orderFood(venison);
+
+olenna.orderFood(wine);
+olenna.orderFood(pie);
+
+oberyn.orderFood(wine);
+oberyn.orderFood(brown);
+
+tyrion.orderFood(wine);
+tyrion.orderFood(wine);
+tyrion.orderFood(wine);
+tyrion.orderFood(wine);
+
+sansa.orderFood(lemoncakes);
+
 console.log('------------------------------');
-console.log('Dinner is now served.');
+console.log('Dinner is now served.\r\n');
 
-for(var i = 0; i<purpleWedding.diners.length; i++){
-    var wine = purpleWedding.diners[i].orderFood(purpleWedding.menu[0]);   // everyone orders wine
+for(var diner = 0; diner < purpleWedding.diners.length; diner++){
+    var status = purpleWedding.diners[diner].firstname + ' is having:\r\n';
 
-    if (purpleWedding.diners[i].firstname == 'Sansa') {
-            diner.orderFood(purpleWedding.menu[3])
+    for(var dish = 0; dish < purpleWedding.diners[diner].meal.length; dish++) {
+        status += purpleWedding.diners[diner].meal[dish].name + '\r\n';
     }
-
-    for (var q = 0; )
-
-    console.log(purpleWedding.diners[i].firstname + ' is having ' + wine);
+    console.log(status);
 }
-// loop through each diner
-// for each diner, call feedGuest
-//     // loop through diner.meal
-// for(var i = 0; i<diners.length; i++){
-//     if(purpleWedding.diners[i].firstname == 'Sansa'){
-//         Sansa.orderFood(purpleWedding.menu.)
-//     }
-//
-//
-//                 );
-// };
