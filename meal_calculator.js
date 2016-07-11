@@ -12,17 +12,26 @@ Diner.prototype.orderFood = function(dish)    {
     this.meal.push(dish)
 };
 
-Diner.prototype.myBill = function(tax,tip) {
-    var myBill = 0;
+Diner.prototype.myBill = function(taxRate,tipRate) {
+    var breakdown = {
+        subtotal: 0,
+        tax: 0,
+        tip: 0,
+        total: 0
+    };
 
     for(var i = 0; i < this.meal.length; i++) {
-        myBill += meal[i].price;
+        breakdown.subTotal += this.meal[i].price;
     }
 
-    // myBill = myBill + (myBill * tax);
-    // myBill = myBill + (myBill * tip);
+    breakdown.tax = breakdown.subTotal * taxRate;
+    breakdown.tip  = (breakdown.subTotal + breakdown.tax) * tipRate;
+    breakdown.total = breakdown.subTotal + breakdown.tax + breakdown.tip;
 
-    return myBill;
+    console.log(diner.firstname + ' owes: ' + breakdown.subTotal + ' + ' + breakdown.tax + ' for tax and ' +  breakdown.tip + ' for tip.');
+    console.log('Total: ' + breakdown.total);
+
+    // return breakdown;
 };
 
 function Dish (name,price) {
@@ -30,54 +39,29 @@ function Dish (name,price) {
     this.price = price
 }
 
-function Feast (tax,tip,diners,menu) {
+function Feast (tax,tip,diners,menu,grandtotal) {
     this.tax = tax;
     this.tip = tip;
     this.diners = [];
     this.menu = [];
+    this.grandtotal = grandtotal;
 }
 
-Feast.prototype.buildMenu = function() {
-    var menu = [];
-
-    // create menu dishes
-    var wine = new Dish();
-    wine.name = 'Imp\'s Special Ale';
-    wine.price = 10;
-    menu.push(wine);
-
-    var venison = new Dish();
-    venison.name = 'Stormlands Venison';
-    venison.price = 10;
-    menu.push(venison);
-
-    var lemoncakes = new Dish();
-    lemoncakes.name = 'Lemon Cakes';
-    lemoncakes.price = 8;
-    menu.push(lemoncakes);
-
-    var brown = new Dish();
-    brown.name = 'Flea Bottom Bowl of Brown';
-    brown.price = 1;
-    menu.push(brown);
-
-    var pie = new Dish();
-    pie.name = 'Wedding Pigeon Pie';
-    pie.price = 20;
-    menu.push(pie);
-
-    return menu;    // array of dishes (objects)
-};
-
-Feast.prototype.calculateCheck = function() {
-
-};
+// Feast.prototype.calculateCheck = function(diner) {
+//
+//     // var split = diner.myBill(this.tax, this.tip);
+//     // console.log(split.subTotal);
+//
+//     // console.log(diner.firstname + ' owes: ' + split.subTotal + ' + ' + split.tax + ' for tax and ' + split.tip + ' for tip.');
+//     // console.log('Total: ' + split.total);
+//     //
+//     // this.grandtotal += split.total
+//     // return split.total;
+// };
 
 
  // -------------------------------------------------- main program -------------------------------------------------/
 var purpleWedding = new Feast();
-
-//  purpleWedding.diners = new purpleWedding.getDiners();     // array of diner objects
 
 console.log('----------------------------------------------');
 console.log('******** Welcome to the Royal Wedding ********');
@@ -151,7 +135,7 @@ purpleWedding.menu.push(pie);
 console.log('----------------------------------------------');
 console.log('Today\'s Menu is:');
 for(var i = 0; i<purpleWedding.menu.length; i++){
-    console.log(purpleWedding.menu[i].name + ' ' + purpleWedding.menu[i].price);    // display the menu
+    console.log(purpleWedding.menu[i].name + '\t' + purpleWedding.menu[i].price);    // display the menu
 }
 
 joff.orderFood(wine);
@@ -181,3 +165,30 @@ for(var diner = 0; diner < purpleWedding.diners.length; diner++){
     }
     console.log(status);
 }
+
+console.log('--------------------------------------------------------------');
+console.log('Time to pay for this feast and the Master of Coin is drunk.');
+
+purpleWedding.tax = 0.08;
+purpleWedding.tip = 0.25;
+
+purpleWedding.grandtotal = 0;
+
+// var joffsplit = joff.myBill(purpleWedding.tax, purpleWedding.tip);
+// purpleWedding.grandtotal += joffsplit.total;
+// console.log('Joffrey owes: ' + joffsplit.subTotal + ' + ' + joffsplit.tax + ' for tax and ' + joffsplit.tip + ' for tip.');
+// console.log('Total: ' + joffsplit.total);
+
+
+
+for(var diner = 0; diner < purpleWedding.diners.length; diner++){
+    purpleWedding.diners[diner].myBill(purpleWedding.tax,purpleWedding.tip);
+    purpleWedding.grandtotal += diner.total;
+}
+
+console.log('---------------------------------------------------------------------');
+console.log('The grand total for this feast is: ' + purpleWedding.grandtotal + ' golden dragons!');
+console.log('Where is Lord Tywin? The caterers heard a rumor about him...');
+console.log('Oh! Hey! Look! King Joffrey just dropped dead! Such a shame...well not really...');
+console.log('Hey Lady Olenna Tyrell, where are you running off to???');
+console.log('---------------------------------------------------------------------');
