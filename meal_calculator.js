@@ -1,4 +1,4 @@
-// Meal calculator app -- JAB 6-2016
+// Meal calculator app -- JAB 8-2016
 'use strict'
 
 function Diner (firstname,lastname,title,meal) {
@@ -21,17 +21,18 @@ Diner.prototype.myBill = function(taxRate,tipRate) {
     };
 
     for(var i = 0; i < this.meal.length; i++) {
-        breakdown.subTotal += this.meal[i].price;
+        breakdown.subtotal += this.meal[i].price;
     }
 
-    breakdown.tax = breakdown.subTotal * taxRate;
-    breakdown.tip  = (breakdown.subTotal + breakdown.tax) * tipRate;
-    breakdown.total = breakdown.subTotal + breakdown.tax + breakdown.tip;
+    breakdown.tax = breakdown.subtotal * taxRate;
+    breakdown.tip  = (breakdown.subtotal + breakdown.tax) * tipRate;
+    breakdown.total = breakdown.subtotal + breakdown.tax + breakdown.tip;
 
-    console.log(diner.firstname + ' owes: ' + breakdown.subTotal + ' + ' + breakdown.tax + ' for tax and ' +  breakdown.tip + ' for tip.');
-    console.log('Total: ' + breakdown.total);
+    console.log(this.firstname + ' owes: ' + breakdown.subtotal + ' + ' + breakdown.tax + ' for tax and ' +  breakdown.tip + ' for tip.');
+    console.log('Total: ' + Math.round(breakdown.total * 100) / 100);
+    console.log('----------------------------------------------');
 
-    // return breakdown;
+    return breakdown.total;
 };
 
 function Dish (name,price) {
@@ -46,19 +47,6 @@ function Feast (tax,tip,diners,menu,grandtotal) {
     this.menu = [];
     this.grandtotal = grandtotal;
 }
-
-// Feast.prototype.calculateCheck = function(diner) {
-//
-//     // var split = diner.myBill(this.tax, this.tip);
-//     // console.log(split.subTotal);
-//
-//     // console.log(diner.firstname + ' owes: ' + split.subTotal + ' + ' + split.tax + ' for tax and ' + split.tip + ' for tip.');
-//     // console.log('Total: ' + split.total);
-//     //
-//     // this.grandtotal += split.total
-//     // return split.total;
-// };
-
 
  // -------------------------------------------------- main program -------------------------------------------------/
 var purpleWedding = new Feast();
@@ -174,20 +162,14 @@ purpleWedding.tip = 0.25;
 
 purpleWedding.grandtotal = 0;
 
-// var joffsplit = joff.myBill(purpleWedding.tax, purpleWedding.tip);
-// purpleWedding.grandtotal += joffsplit.total;
-// console.log('Joffrey owes: ' + joffsplit.subTotal + ' + ' + joffsplit.tax + ' for tax and ' + joffsplit.tip + ' for tip.');
-// console.log('Total: ' + joffsplit.total);
-
-
-
 for(var diner = 0; diner < purpleWedding.diners.length; diner++){
-    purpleWedding.diners[diner].myBill(purpleWedding.tax,purpleWedding.tip);
-    purpleWedding.grandtotal += diner.total;
+    purpleWedding.grandtotal += purpleWedding.diners[diner].myBill(purpleWedding.tax,purpleWedding.tip);
 }
 
 console.log('---------------------------------------------------------------------');
 console.log('The grand total for this feast is: ' + purpleWedding.grandtotal + ' golden dragons!');
+console.log('---------------------------------------------------------------------');
+console.log('---------------------------------------------------------------------');
 console.log('Where is Lord Tywin? The caterers heard a rumor about him...');
 console.log('Oh! Hey! Look! King Joffrey just dropped dead! Such a shame...well not really...');
 console.log('Hey Lady Olenna Tyrell, where are you running off to???');
